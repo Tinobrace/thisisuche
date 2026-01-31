@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-# thisisuche
+
 =======
 
->>>>>>> c2cf026 (Initial commit: Project Setup)
-
 # ThisIsUche
+
+=======
 
 ThisIsUche is a personal DevOps life dashboard.
 
