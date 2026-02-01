@@ -1,23 +1,30 @@
-import { ReactNode } from "react";
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 
-type Props = {
-  children: ReactNode;
-};
-
-const AppLayout = ({ children }: Props) => {
+export default function AppLayout({ children }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div style={styles.app}>
       <TopBar />
-
-      <div className="flex flex-1">
+      <div style={styles.body}>
         <Sidebar />
-        <main className="flex-1 bg-gray-50">{children}</main>
+        <main style={styles.main}>{children}</main>
       </div>
     </div>
   );
+}
+
+const styles = {
+  app: {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+  },
+  body: {
+    flex: 1,
+    display: "flex",
+  },
+  main: {
+    flex: 1,
+    padding: "32px",
+  },
 };
-
-export default AppLayout;
-

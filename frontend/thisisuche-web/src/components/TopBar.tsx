@@ -1,9 +1,32 @@
-const TopBar = () => {
+export default function TopBar() {
   return (
-    <header className="h-14 border-b flex items-center px-6 font-semibold">
-      thisisuche
+    <header style={styles.header}>
+      <h1 style={styles.logo}>ThisIsUche</h1>
+      <nav style={styles.nav}>
+        <span>Dashboard</span>
+        <span>Bio</span>
+        <span>Projects</span>
+      </nav>
     </header>
   );
-};
+}
 
-export default TopBar;
+const styles = {
+  header: {
+    height: "60px",
+    padding: "0 24px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottom: "1px solid #e5e7eb",
+  },
+  logo: {
+    fontSize: "20px",
+    fontWeight: "600",
+  },
+  nav: {
+    display: "flex",
+    gap: "16px",
+    fontSize: "14px",
+  },
+};
