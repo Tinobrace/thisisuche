@@ -1,26 +1,25 @@
-const Projects = () => {
+import ProjectCard from "../components/ProjectCard"
+
+export default function Projects() {
   return (
-    <section className="p-8">
-      <h1 className="text-3xl font-bold mb-4">Projects</h1>
+    <div className="page">
+      <h1>Projects</h1>
 
-      <div className="space-y-6">
-        <div>
-          <h2 className="font-semibold">Completed</h2>
-          <ul className="list-disc list-inside text-gray-600">
-            <li>CRUD App Deployment (Docker + CI/CD)</li>
-            <li>Kubernetes Training Projects</li>
-          </ul>
-        </div>
+      <div className="project-grid">
+        <ProjectCard
+          title="Secure Cloud Web App"
+          description="Deployed a secure web application with HTTPS, CI/CD, and monitoring."
+          status="completed"
+          stack={["AWS", "Nginx", "CI/CD"]}
+        />
 
-        <div>
-          <h2 className="font-semibold">In Progress</h2>
-          <ul className="list-disc list-inside text-gray-600">
-            <li>ThisIsUche Personal Platform</li>
-          </ul>
-        </div>
+        <ProjectCard
+          title="ThisIsUche"
+          description="Personal DevOps dashboard to track growth, projects, and roadmap."
+          status="in-progress"
+          stack={["React", "Vite", "DevOps"]}
+        />
       </div>
-    </section>
-  );
-};
-
-export default Projects;
+    </div>
+  )
+}

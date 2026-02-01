@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.page {
+    max-width: 900px;
+}
+
+.home-intro h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.25rem;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.home-about {
+    margin-top: 2rem;
+    line-height: 1.7;
+    color: #cbd5f5;
+}
+
+.home-now,
+.home-future {
+    margin-top: 2.5rem;
+}
+
+.home-now ul {
+    margin-top: 0.75rem;
+    padding-left: 1.2rem;
+}
+
+.home-now li {
+    margin-bottom: 0.5rem;
+}

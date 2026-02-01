@@ -1,7 +1,7 @@
 export default function TopBar() {
   return (
     <header style={styles.header}>
-      <h1 style={styles.logo}>ThisIsUche</h1>
+      <h2 style={styles.logo}>ThisIsUche</h2>
       <nav style={styles.nav}>
         <span>Dashboard</span>
         <span>Bio</span>

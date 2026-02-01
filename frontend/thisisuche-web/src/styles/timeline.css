@@ -1,0 +1,73 @@
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  line-height: 1.65;
+}
+
+.home-intro h2 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #555;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  margin: 3rem 0 2rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.timeline-item {
+  margin-bottom: 3rem;
+}
+
+.timeline-header {
+  margin-bottom: 1rem;
+}
+
+.role {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.era {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #777;
+}
+
+.timeline-body p {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.closing {
+  margin-top: 4rem;
+  font-style: italic;
+  color: #444;
+}
+
+.home-now,
+.home-future {
+  margin-top: 3rem;
+}
+
+.home-now h2,
+.home-future h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.home-now ul {
+  padding-left: 1.2rem;
+}
+
+.home-now li {
+  margin-bottom: 0.5rem;
+}

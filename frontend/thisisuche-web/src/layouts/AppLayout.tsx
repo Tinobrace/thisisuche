@@ -1,7 +1,14 @@
 import TopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 
-export default function AppLayout({ children }) {
+import { ReactNode } from "react";
+
+type AppLayoutProps = {
+  children: ReactNode;
+};
+
+export default function AppLayout({ children }: AppLayoutProps) {
+
   return (
     <div style={styles.app}>
       <TopBar />

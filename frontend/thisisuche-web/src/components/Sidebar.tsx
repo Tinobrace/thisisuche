@@ -1,23 +1,18 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
 
-const Sidebar = () => {
+export default function Sidebar() {
   return (
-    <aside className="w-64 border-r p-6">
-      <nav className="space-y-3">
-        <NavLink to="/" className="block font-medium">
-          Home
-        </NavLink>
+    <aside className="sidebar">
+      <div className="sidebar-header">
+        <h2>ThisIsUche</h2>
+        <p className="tagline">DevOps Engineer</p>
+      </div>
 
-        <NavLink to="/projects" className="block text-gray-500">
-          Projects
-        </NavLink>
-
-        <NavLink to="/roadmap" className="block text-gray-500">
-          Roadmap
-        </NavLink>
+      <nav className="sidebar-nav">
+        <NavLink to="/" end>Home</NavLink>
+        <NavLink to="/projects">Projects</NavLink>
+        <NavLink to="/roadmap">Roadmap</NavLink>
       </nav>
     </aside>
-  );
-};
-
-export default Sidebar;
+  )
+}
