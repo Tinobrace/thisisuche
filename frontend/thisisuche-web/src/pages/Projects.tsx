@@ -1,53 +1,113 @@
+const projects = [
+  {
+    title: "Secure Cloud Web App",
+    status: "Completed",
+    description:
+      "Deployed a secure web application with HTTPS, CI/CD, and monitoring.",
+    tags: ["AWS", "Nginx", "CI/CD"],
+  },
+  {
+    title: "ThisIsUche",
+    status: "In Progress",
+    description:
+      "Personal DevOps dashboard to track growth, projects, and roadmap.",
+    tags: ["React", "Vite", "DevOps"],
+  },
+  {
+    title: "autodeploy-express",
+    status: "Completed",
+    description:
+      "Automated CI/CD pipeline demonstrating real-world DevOps practices with Docker and GitHub Actions.",
+    tags: ["Node.js", "Docker", "GitHub Actions"],
+  },
+  {
+    title: "docker-express-pipeline",
+    status: "Completed",
+    description:
+      "Simple Express API built as a learning project for Docker and CI/CD workflows.",
+    tags: ["Docker", "Express", "CI/CD"],
+  },
+  {
+    title: "aws-devops-ci-cd",
+    status: "Completed",
+    description:
+      "14-day AWS DevOps CI/CD battle plan with Jenkins, CodeArtifact, CodeBuild, CodeDeploy, and Terraform.",
+    tags: ["AWS", "Jenkins", "Terraform"],
+  },
+  {
+    title: "crud-app",
+    status: "Completed",
+    description:
+      "Simple Flask CRUD app. My first hosted cloud app - valencloud.xyz",
+    tags: ["Python", "Flask", "Cloud"],
+  },
+  {
+    title: "pybox-status-api",
+    status: "Completed",
+    description:
+      "A minimal Python FastAPI app in a Docker container that returns system status (uptime, hostname, timestamp).",
+    tags: ["Python", "FastAPI", "Docker"],
+  },
+  {
+    title: "email-messaging-system",
+    status: "Completed",
+    description:
+      "Building a smart messaging system that runs smoothly and doesn't crash when many people use it!",
+    tags: ["Python", "Messaging", "Scalability"],
+  },
+  {
+    title: "Haproxy-LoadBalancing-Lab",
+    status: "Completed",
+    description:
+      "This is a solid networking task focused on setting up and testing HAProxy as a Load Balancer.",
+    tags: ["HAProxy", "Load Balancing", "Networking"],
+  },
+  {
+    title: "three-tier-app",
+    status: "Completed",
+    description:
+      "Three-Tier Application with Docker, Docker Compose, and Nginx.",
+    tags: ["Docker", "Nginx", "JavaScript"],
+  },
+];
+
 export default function Projects() {
   return (
     <div>
       <h1 style={styles.pageTitle}>Projects</h1>
 
       <div style={styles.grid}>
-        <div style={styles.card}>
-          <div style={styles.header}>
-            <h3 style={styles.title}>Secure Cloud Web App</h3>
-            <span style={{ ...styles.badge, ...styles.completed }}>
-              Completed
-            </span>
+        {projects.map((project) => (
+          <div key={project.title} style={styles.card}>
+            <div style={styles.header}>
+              <h3 style={styles.title}>{project.title}</h3>
+              <span
+                style={{
+                  ...styles.badge,
+                  ...(project.status === "Completed"
+                    ? styles.completed
+                    : styles.inProgress),
+                }}
+              >
+                {project.status}
+              </span>
+            </div>
+
+            <p style={styles.description}>{project.description}</p>
+
+            <div style={styles.tags}>
+              {project.tags.map((tag) => (
+                <span key={tag} style={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-
-          <p style={styles.description}>
-            Deployed a secure web application with HTTPS, CI/CD, and monitoring.
-          </p>
-
-          <div style={styles.tags}>
-            <span style={styles.tag}>AWS</span>
-            <span style={styles.tag}>Nginx</span>
-            <span style={styles.tag}>CI/CD</span>
-          </div>
-        </div>
-
-        <div style={styles.card}>
-          <div style={styles.header}>
-            <h3 style={styles.title}>ThisIsUche</h3>
-            <span style={{ ...styles.badge, ...styles.inProgress }}>
-              In Progress
-            </span>
-          </div>
-
-          <p style={styles.description}>
-            Personal DevOps dashboard to track growth, projects, and roadmap.
-          </p>
-
-          <div style={styles.tags}>
-            <span style={styles.tag}>React</span>
-            <span style={styles.tag}>Vite</span>
-            <span style={styles.tag}>DevOps</span>
-
-            
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 }
-
 
 const styles = {
   pageTitle: {

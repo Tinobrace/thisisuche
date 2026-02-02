@@ -18,7 +18,7 @@ export default function Sidebar() {
           }>Home</Link>
         <Link to="/projects" style={styles.link}
           onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#555e6f")
+            (e.currentTarget.style.backgroundColor = "#1652c2")
           }
           onMouseLeave={(e) =>
             (e.currentTarget.style.backgroundColor = "transparent")
@@ -37,10 +37,10 @@ export default function Sidebar() {
 
 const styles = {
   sidebar: {
-    width: "240px",
-    backgroundColor: "#f8fafc",
+    width: "180px",
+    backgroundColor: "#dee4ea",
     padding: "24px 16px",
-    borderRight: "1px solid #e5e7eb",
+    borderRight: "1px solid #aaacb0",
     display: "flex",
     flexDirection: "column",
     gap: "40px",
