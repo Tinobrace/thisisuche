@@ -1,59 +1,19 @@
-import { projects } from "../data/projects";
-
-// Pure function to count projects by tag
-const countByTag = (tag: string) =>
-  projects.filter((project) => project.tags.includes(tag)).length;
-
-const expectedSkills = [
-  "Linux",
-  "Networking",
-  "Docker",
-  "Kubernetes",
-  "CI/CD",
-  "AWS",
-  "Terraform",
-  "Monitoring",
-  "Security",
-  "Databases",
-  "System Design",
-];
-
-const actualSkills = new Set<string>();
-
-projects.forEach((project) => {
-  project.tags.forEach((tag) => {
-    actualSkills.add(tag);
-  });
-});
-
-const missingSkills = expectedSkills.filter(
-  (skill) => !actualSkills.has(skill)
-);
-
-// Build a tag frequency map
-const getTagStats = () => {
-  const map: Record<string, number> = {};
-
-  projects.forEach((project) => {
-    project.tags.forEach((tag) => {
-      map[tag] = (map[tag] || 0) + 1;
-    });
-  });
-
-  return map;
-};
+import { useProjectStats } from "../hooks/useProjectStats";
 
 export default function Home() {
-  // Calculate stats dynamically
-  const completed = projects.filter((p) => p.status === "Completed").length;
-  const inProgress = projects.filter((p) => p.status === "In Progress").length;
-  const awsCount = countByTag("AWS");
-  const dockerCount = countByTag("Docker");
-  const cicdCount = countByTag("CI/CD");
+  const stats = useProjectStats();
 
-  // Get tag statistics and sort by frequency
-  const tagStats = getTagStats();
-  const sortedTags = Object.entries(tagStats).sort((a, b) => b[1] - a[1]);
+  // 1. Extract values from stats safely
+  const completed = stats?.completed || 0;
+  const inProgress = stats?.inProgress || 0;
+  const awsCount = stats?.tags?.["AWS"] || 0;
+  const dockerCount = stats?.tags?.["Docker"] || 0;
+  const cicdCount = stats?.tags?.["CI/CD"] || 0;
+
+  // 2. Sort tags by frequency (handling potential undefined)
+  const sortedTags = stats?.tags
+    ? Object.entries(stats.tags).sort((a, b) => b[1] - a[1])
+    : [];
 
   return (
     <div>
@@ -71,34 +31,24 @@ export default function Home() {
       </div>
 
       <section style={styles.skills}>
-        <h2 style={styles.sectionTitle}>Skill Focus</h2>
+        <h2 style={styles.sectionTitle}>Skill Exposure</h2>
 
         <div style={styles.skillGrid}>
           {sortedTags.map(([tag, count]) => (
-            <div key={tag} style={styles.skillItem}>
+            <div
+              key={tag}
+              style={{
+                ...styles.skillItem,
+                // Highlight the most used skill
+                opacity: sortedTags.length > 0 && count === sortedTags[0][1] ? 1 : 0.85,
+              }}
+            >
               <span>{tag}</span>
               <strong>{count}</strong>
             </div>
           ))}
         </div>
       </section>
-
-      <section style={styles.gaps}>
-  <h2 style={styles.sectionTitle}>Blind Spots</h2>
-
-  {missingSkills.length === 0 ? (
-    <p style={styles.goodNews}>
-      No obvious gaps detected. That’s rare. Respect.
-    </p>
-  ) : (
-    <ul style={styles.gapList}>
-      {missingSkills.map((skill) => (
-        <li key={skill}>{skill}</li>
-      ))}
-    </ul>
-  )}
-</section>
-
     </div>
   );
 }
@@ -140,7 +90,7 @@ const styles = {
     border: "1px solid #e5e7eb",
     borderRadius: "10px",
     padding: "24px",
-    textAlign: "center" as "center",
+    textAlign: "center" as const,
   },
   cardValue: {
     fontSize: "36px",
@@ -162,7 +112,7 @@ const styles = {
   },
   skillGrid: {
     display: "flex",
-    flexWrap: "wrap" as "wrap",
+    flexWrap: "wrap" as const,
     gap: "12px",
   },
   skillItem: {
@@ -175,20 +125,4 @@ const styles = {
     fontSize: "14px",
     fontWeight: 500,
   },
-  <section style={styles.gaps}>
-  <h2 style={styles.sectionTitle}>Blind Spots</h2>
-
-  {missingSkills.length === 0 ? (
-    <p style={styles.goodNews}>
-      No obvious gaps detected. That’s rare. Respect.
-    </p>
-  ) : (
-    <ul style={styles.gapList}>
-      {missingSkills.map((skill) => (
-        <li key={skill}>{skill}</li>
-      ))}
-    </ul>
-  )}
-</section>
-
 };

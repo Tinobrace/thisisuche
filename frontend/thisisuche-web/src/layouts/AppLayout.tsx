@@ -1,37 +1,28 @@
-import TopBar from "../components/TopBar";
+import { ReactNode } from "react";
 import Sidebar from "../components/Sidebar";
 
-import { ReactNode } from "react";
-
-type AppLayoutProps = {
+interface AppLayoutProps {
   children: ReactNode;
-};
+}
 
 export default function AppLayout({ children }: AppLayoutProps) {
-
   return (
-    <div style={styles.app}>
-      <TopBar />
-      <div style={styles.body}>
-        <Sidebar />
-        <main style={styles.main}>{children}</main>
-      </div>
+    <div style={styles.container}>
+      <Sidebar />
+      <main style={styles.main}>{children}</main>
     </div>
   );
 }
 
 const styles = {
-  app: {
-    height: "100vh",
+  container: {
     display: "flex",
-    flexDirection: "column",
-  },
-  body: {
-    flex: 1,
-    display: "flex",
+    minHeight: "100vh",
+    backgroundColor: "#a8b8c6",
   },
   main: {
     flex: 1,
     padding: "32px",
+    overflowY: "auto" as "auto",
   },
 };

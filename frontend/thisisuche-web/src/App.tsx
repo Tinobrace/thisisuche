@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Roadmap from "./pages/Roadmap";
 
-function App() {
+export default function App() {
   return (
     <AppLayout>
       <Routes>
@@ -15,5 +15,3 @@ function App() {
     </AppLayout>
   );
 }
-
-export default App;
