@@ -1,95 +1,96 @@
-import { projects } from "../data/projects";
+import { Home, FolderGit2, Map } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
-export default function Home() {
-
-  const completed = projects.filter(
-  (p) => p.status === "Completed"
-).length;
-
-const inProgress = projects.filter(
-  (p) => p.status === "In Progress"
-).length;
-
+export default function Sidebar() {
   return (
-    <div>
-      <section style={styles.section}>
-        <h1 style={styles.title}>Uchenna Valentine Ukah</h1>
-        <p style={styles.subtitle}>
-          DevOps Engineer • Systems Thinker • Reliability-First Builder • Lifelong Learner ·
-        </p>
-        <p style={styles.text}>
-          I build reliable systems, automate workflows, and turn ideas into
-          production-ready infrastructure.
-        </p>
-         <p>
-                    I am building a career shaped by responsibility, repetition, and respect for systems.
-        </p>
-      </section>
+    <aside style={styles.sidebar}>
+      <div style={styles.profile}>
+        <h1 style={styles.name}>ThisIsUche</h1>
+        <p style={styles.role}>DevOps Engineer</p>
+      </div>
 
-      <section style={styles.section}>
-        <h2 style={styles.heading}>What I Do</h2>
-        <p style={styles.text}>
-          I work with cloud platforms, CI/CD pipelines, containers, and
-          infrastructure automation to ship software safely and repeatedly.
-        </p>
-      </section>
-
-      <section style={styles.section}>
-        <h2 style={styles.heading}>Where I’m Going</h2>
-        <p style={styles.text}>
-          My goal is to grow into a world-class DevSecOps architect, working on
-          meaningful systems, mentoring others, and building tools that create
-          lasting impact beyond any single role or company.
-        </p>
-      </section>
-
-      <section style={styles.section}>
-  <h2 style={styles.heading}>Quick Stats</h2>
-
-  <div style={styles.stats}>
-    <div>
-      <strong>{completed}</strong>
-      <p>Completed Projects</p>
-    </div>
-
-    <div>
-      <strong>{inProgress}</strong>
-      <p>Projects in Progress</p>
-    </div>
-  </div>
-</section>
-
-    </div>
-    );
+      <nav style={styles.nav}>
+        <NavLink
+          to="/"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          <Home size={18} />
+          <span>Home</span>
+        </NavLink>
+        <NavLink
+          to="/projects"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          <FolderGit2 size={18} />
+          <span>Projects</span>
+        </NavLink>
+        <NavLink
+          to="/roadmap"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          <Map size={18} />
+          <span>Roadmap</span>
+        </NavLink>
+      </nav>
+    </aside>
+  );
 }
 
 const styles = {
-  section: {
-    marginBottom: "40px",
-    maxWidth: "800px",
+  sidebar: {
+    width: "180px",
+    backgroundColor: "#dee4ea",
+    padding: "24px 16px",
+    borderRight: "1px solid #aaacb0",
+    display: "flex",
+    flexDirection: "column" as "column",
+    gap: "40px",
   },
-  title: {
-    fontSize: "36px",
-    fontWeight: "bold",
-    marginBottom: "8px",
+  profile: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    gap: "2px",
   },
-  subtitle: {
+  name: {
+    margin: 0,
     fontSize: "18px",
-    opacity: 0.8,
-    marginBottom: "16px",
+    fontWeight: 600,
   },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "12px",
+  role: {
+    margin: 0,
+    fontSize: "13px",
+    color: "#64748b",
   },
-  text: {
-    fontSize: "16px",
-    lineHeight: 1.6,
+  nav: {
+    display: "flex",
+    flexDirection: "column" as "column",
+    gap: "10px",
   },
-  stats: {
-  display: "flex",
-  gap: "40px",
-  marginTop: "16px",
-},
-
+  link: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    padding: "12px 16px",
+    textDecoration: "none",
+    color: "#0f172a",
+    fontSize: "15px",
+    borderRadius: "8px",
+  },
+  activeLink: {
+    backgroundColor: "#5e67cd",
+    color: "#ffffff",
+    fontWeight: 600,
+  },
+  container: {
+    padding: "16px",
+  },
 };

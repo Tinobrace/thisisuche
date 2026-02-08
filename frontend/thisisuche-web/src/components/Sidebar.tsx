@@ -1,3 +1,4 @@
+import { Home, FolderGit2, Map } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
@@ -16,7 +17,8 @@ export default function Sidebar() {
             ...(isActive ? styles.activeLink : {}),
           })}
         >
-          Home
+          <Home size={18} />
+          <span>Home</span>
         </NavLink>
         <NavLink
           to="/projects"
@@ -25,7 +27,8 @@ export default function Sidebar() {
             ...(isActive ? styles.activeLink : {}),
           })}
         >
-          Projects
+          <FolderGit2 size={18} />
+          <span>Projects</span>
         </NavLink>
         <NavLink
           to="/roadmap"
@@ -34,7 +37,8 @@ export default function Sidebar() {
             ...(isActive ? styles.activeLink : {}),
           })}
         >
-          Roadmap
+          <Map size={18} />
+          <span>Roadmap</span>
         </NavLink>
       </nav>
     </aside>
@@ -72,20 +76,21 @@ const styles = {
     gap: "10px",
   },
   link: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    padding: "12px 16px",
     textDecoration: "none",
     color: "#0f172a",
     fontSize: "15px",
-    padding: "8px 12px",
-    borderRadius: "6px",
+    borderRadius: "8px",
   },
   activeLink: {
-    backgroundColor: "#436dc0",
+    backgroundColor: "#5e67cd",
     color: "#ffffff",
     fontWeight: 600,
   },
-  activeLink: {
-  backgroundColor: "#5e67cd",
-  fontWeight: "bold",
-},
-
+  container: {
+    padding: "16px",
+  },
 };
