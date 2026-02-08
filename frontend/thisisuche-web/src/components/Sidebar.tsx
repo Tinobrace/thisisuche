@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -9,27 +9,33 @@ export default function Sidebar() {
       </div>
 
       <nav style={styles.nav}>
-        <Link to="/" style={styles.link}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#436dc0")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "transparent")
-          }>Home</Link>
-        <Link to="/projects" style={styles.link}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#1652c2")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "transparent")
-          }>Projects</Link>
-        <Link to="/roadmap" style={styles.link}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.backgroundColor = "#2361de")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.backgroundColor = "transparent")
-          }>Roadmap</Link>
+        <NavLink
+          to="/"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/projects"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          Projects
+        </NavLink>
+        <NavLink
+          to="/roadmap"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          Roadmap
+        </NavLink>
       </nav>
     </aside>
   );
@@ -42,12 +48,12 @@ const styles = {
     padding: "24px 16px",
     borderRight: "1px solid #aaacb0",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as "column",
     gap: "40px",
   },
   profile: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as "column",
     gap: "2px",
   },
   name: {
@@ -62,7 +68,7 @@ const styles = {
   },
   nav: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as "column",
     gap: "10px",
   },
   link: {
@@ -72,4 +78,14 @@ const styles = {
     padding: "8px 12px",
     borderRadius: "6px",
   },
+  activeLink: {
+    backgroundColor: "#436dc0",
+    color: "#ffffff",
+    fontWeight: 600,
+  },
+  activeLink: {
+  backgroundColor: "#5e67cd",
+  fontWeight: "bold",
+},
+
 };
