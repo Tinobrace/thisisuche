@@ -1,96 +1,67 @@
-import { Home, FolderGit2, Map } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { projects } from "../data/projects";
 
-export default function Sidebar() {
+export default function Home() {
+  const completed = projects.filter(
+  (project) => project.status === "Completed"
+).length;
+
+const inProgress = projects.filter(
+  (project) => project.status === "In Progress"
+).length;
+
   return (
-    <aside style={styles.sidebar}>
-      <div style={styles.profile}>
-        <h1 style={styles.name}>ThisIsUche</h1>
-        <p style={styles.role}>DevOps Engineer</p>
-      </div>
+    <div style={styles.container}>
+      <header style={styles.header}>
+        <h1>ThisIsUche</h1>
+        <p>
+          DevOps engineer documenting projects, sharpening systems thinking,
+          and building toward mastery.
+        </p>
+      </header>
 
-      <nav style={styles.nav}>
-        <NavLink
-          to="/"
-          style={({ isActive }) => ({
-            ...styles.link,
-            ...(isActive ? styles.activeLink : {}),
-          })}
-        >
-          <Home size={18} />
-          <span>Home</span>
-        </NavLink>
-        <NavLink
-          to="/projects"
-          style={({ isActive }) => ({
-            ...styles.link,
-            ...(isActive ? styles.activeLink : {}),
-          })}
-        >
-          <FolderGit2 size={18} />
-          <span>Projects</span>
-        </NavLink>
-        <NavLink
-          to="/roadmap"
-          style={({ isActive }) => ({
-            ...styles.link,
-            ...(isActive ? styles.activeLink : {}),
-          })}
-        >
-          <Map size={18} />
-          <span>Roadmap</span>
-        </NavLink>
-      </nav>
-    </aside>
+      <section style={styles.stats}>
+        <div style={styles.card}>
+          <h3>Projects Completed</h3>
+          <p style={styles.number}>{completed}</p>
+        </div>
+
+        <div style={styles.card}>
+          <h3>Projects In Progress</h3>
+          <p style={styles.number}>{inProgress}</p>
+        </div>
+
+        <div style={styles.card}>
+          <h3>Current Focus</h3>
+          <p>CI/CD · Docker · Cloud</p>
+        </div>
+      </section>
+    </div>
   );
 }
 
 const styles = {
-  sidebar: {
-    width: "180px",
-    backgroundColor: "#dee4ea",
-    padding: "24px 16px",
-    borderRight: "1px solid #aaacb0",
-    display: "flex",
-    flexDirection: "column" as "column",
-    gap: "40px",
-  },
-  profile: {
-    display: "flex",
-    flexDirection: "column" as "column",
-    gap: "2px",
-  },
-  name: {
-    margin: 0,
-    fontSize: "18px",
-    fontWeight: 600,
-  },
-  role: {
-    margin: 0,
-    fontSize: "13px",
-    color: "#64748b",
-  },
-  nav: {
-    display: "flex",
-    flexDirection: "column" as "column",
-    gap: "10px",
-  },
-  link: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    padding: "12px 16px",
-    textDecoration: "none",
-    color: "#0f172a",
-    fontSize: "15px",
-    borderRadius: "8px",
-  },
-  activeLink: {
-    backgroundColor: "#5e67cd",
-    color: "#ffffff",
-    fontWeight: 600,
-  },
   container: {
-    padding: "16px",
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "32px",
+  },
+  header: {
+    maxWidth: "600px",
+  },
+  stats: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gap: "20px",
+  },
+  card: {
+    padding: "20px",
+    backgroundColor: "#f8fafc",
+    borderRadius: "12px",
+    border: "1px solid #e2e8f0",
+  },
+  number: {
+    fontSize: "32px",
+    fontWeight: 700,
+    margin: 0,
   },
 };
