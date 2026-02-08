@@ -4,6 +4,45 @@ import { projects } from "../data/projects";
 const countByTag = (tag: string) =>
   projects.filter((project) => project.tags.includes(tag)).length;
 
+const expectedSkills = [
+  "Linux",
+  "Networking",
+  "Docker",
+  "Kubernetes",
+  "CI/CD",
+  "AWS",
+  "Terraform",
+  "Monitoring",
+  "Security",
+  "Databases",
+  "System Design",
+];
+
+const actualSkills = new Set<string>();
+
+projects.forEach((project) => {
+  project.tags.forEach((tag) => {
+    actualSkills.add(tag);
+  });
+});
+
+const missingSkills = expectedSkills.filter(
+  (skill) => !actualSkills.has(skill)
+);
+
+// Build a tag frequency map
+const getTagStats = () => {
+  const map: Record<string, number> = {};
+
+  projects.forEach((project) => {
+    project.tags.forEach((tag) => {
+      map[tag] = (map[tag] || 0) + 1;
+    });
+  });
+
+  return map;
+};
+
 export default function Home() {
   // Calculate stats dynamically
   const completed = projects.filter((p) => p.status === "Completed").length;
@@ -11,6 +50,10 @@ export default function Home() {
   const awsCount = countByTag("AWS");
   const dockerCount = countByTag("Docker");
   const cicdCount = countByTag("CI/CD");
+
+  // Get tag statistics and sort by frequency
+  const tagStats = getTagStats();
+  const sortedTags = Object.entries(tagStats).sort((a, b) => b[1] - a[1]);
 
   return (
     <div>
@@ -26,6 +69,36 @@ export default function Home() {
         <StatCard label="Docker Projects" value={dockerCount} />
         <StatCard label="CI/CD Projects" value={cicdCount} />
       </div>
+
+      <section style={styles.skills}>
+        <h2 style={styles.sectionTitle}>Skill Focus</h2>
+
+        <div style={styles.skillGrid}>
+          {sortedTags.map(([tag, count]) => (
+            <div key={tag} style={styles.skillItem}>
+              <span>{tag}</span>
+              <strong>{count}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={styles.gaps}>
+  <h2 style={styles.sectionTitle}>Blind Spots</h2>
+
+  {missingSkills.length === 0 ? (
+    <p style={styles.goodNews}>
+      No obvious gaps detected. That’s rare. Respect.
+    </p>
+  ) : (
+    <ul style={styles.gapList}>
+      {missingSkills.map((skill) => (
+        <li key={skill}>{skill}</li>
+      ))}
+    </ul>
+  )}
+</section>
+
     </div>
   );
 }
@@ -80,4 +153,42 @@ const styles = {
     color: "#64748b",
     margin: 0,
   },
+  skills: {
+    marginTop: "40px",
+  },
+  sectionTitle: {
+    fontSize: "18px",
+    marginBottom: "16px",
+  },
+  skillGrid: {
+    display: "flex",
+    flexWrap: "wrap" as "wrap",
+    gap: "12px",
+  },
+  skillItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    padding: "8px 12px",
+    borderRadius: "999px",
+    backgroundColor: "#eef2ff",
+    fontSize: "14px",
+    fontWeight: 500,
+  },
+  <section style={styles.gaps}>
+  <h2 style={styles.sectionTitle}>Blind Spots</h2>
+
+  {missingSkills.length === 0 ? (
+    <p style={styles.goodNews}>
+      No obvious gaps detected. That’s rare. Respect.
+    </p>
+  ) : (
+    <ul style={styles.gapList}>
+      {missingSkills.map((skill) => (
+        <li key={skill}>{skill}</li>
+      ))}
+    </ul>
+  )}
+</section>
+
 };
