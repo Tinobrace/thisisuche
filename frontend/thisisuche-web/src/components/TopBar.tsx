@@ -1,32 +1,54 @@
+import { NavLink } from "react-router-dom";
+
 export default function TopBar() {
   return (
-    <header style={styles.header}>
-      <h2 style={styles.logo}>ThisIsUche</h2>
-      <nav style={styles.nav}>
-        <span>Dashboard</span>
-        <span>Bio</span>
-        <span>Projects</span>
-      </nav>
-    </header>
+    <div style={styles.topBar}>
+      <div style={styles.links}>
+        <NavLink
+          to="/dashboard"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          Dashboard
+        </NavLink>
+        <NavLink
+          to="/bio"
+          style={({ isActive }) => ({
+            ...styles.link,
+            ...(isActive ? styles.activeLink : {}),
+          })}
+        >
+          Bio
+        </NavLink>
+      </div>
+    </div>
   );
 }
 
 const styles = {
-  header: {
-    height: "60px",
-    padding: "0 24px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
+  topBar: {
+    backgroundColor: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
+    padding: "12px 32px",
   },
-  logo: {
-    fontSize: "20px",
-    fontWeight: "600",
-  },
-  nav: {
+  links: {
     display: "flex",
-    gap: "16px",
+    gap: "24px",
+  },
+  link: {
+    textDecoration: "none",
+    color: "#64748b",
     fontSize: "14px",
+    fontWeight: 500,
+    padding: "8px 12px",
+    borderRadius: "6px",
+    transition: "all 0.2s",
+  },
+  activeLink: {
+    color: "#0f172a",
+    backgroundColor: "#f1f5f9",
+    fontWeight: 600,
   },
 };

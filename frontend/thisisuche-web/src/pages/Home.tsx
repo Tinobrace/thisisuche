@@ -7,7 +7,7 @@ export default function Home() {
       if (project.status === "Completed") acc.completed++;
       if (project.status === "In Progress") acc.inProgress++;
 
-      project.tags.forEach((tag) => {
+      project.stack.forEach((tag) => {  // ← Changed from tags to stack
         acc.tags[tag] = (acc.tags[tag] || 0) + 1;
       });
 
@@ -32,17 +32,11 @@ export default function Home() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section style={styles.hero}>
-        <h1 style={styles.heroTitle}>
-          Hey! I'm Uchenna Valentine Ukah — Glad You're Here.
-        </h1>
-        <p style={styles.heroSubtitle}>
-          DevOps Engineer • Building, Automating, and Scaling Cloud Systems
-        </p>
-      </section>
+      <h1 style={styles.pageTitle}>Hey! I'm Uchenna Valentine Ukah — Glad You're Here.</h1>
+      <p style={styles.subtitle}>
+        DevOps Engineer | Building | Automating | Scaling Cloud Systems
+      </p>
 
-      {/* Stats Section */}
       <div style={styles.stats}>
         <StatCard label="Projects Completed" value={completed} />
         <StatCard label="In Progress" value={inProgress} />
@@ -51,9 +45,8 @@ export default function Home() {
         <StatCard label="CI/CD Projects" value={cicdCount} />
       </div>
 
-      {/* Skill Exposure */}
       <section style={styles.skills}>
-        <h3 style={styles.sectionTitle}>Skill Exposure</h3>
+        <h2 style={styles.sectionTitle}>Skill Exposure</h2>
 
         <div style={styles.skillGrid}>
           {sortedTags.map(([tag, count]) => (
@@ -90,32 +83,28 @@ function StatCard({ label, value }: StatCardProps) {
 }
 
 const styles = {
-  hero: {
-    marginBottom: "48px",
-  },
-  heroTitle: {
-    fontSize: "36px",
+  pageTitle: {
+    fontSize: "32px",
+    marginBottom: "8px",
     fontWeight: 700,
-    marginBottom: "12px",
-    lineHeight: 1.2,
   },
-  heroSubtitle: {
-    fontSize: "18px",
+  subtitle: {
+    fontSize: "16px",
     color: "#64748b",
+    marginBottom: "32px",
   },
   stats: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     gap: "20px",
-    marginBottom: "48px",
+    marginTop: "24px",
   },
   card: {
-    backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
-    borderRadius: "12px",
+    backgroundColor: "#cadae0",
+    border: "1px solid #7288b5",
+    borderRadius: "10px",
     padding: "24px",
     textAlign: "center" as "center",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
   },
   cardValue: {
     fontSize: "36px",
@@ -125,16 +114,15 @@ const styles = {
   },
   cardLabel: {
     fontSize: "14px",
-    color: "#64748b",
+    color: "#082144",
     margin: 0,
   },
   skills: {
-    marginTop: "48px",
+    marginTop: "40px",
   },
   sectionTitle: {
-    fontSize: "20px",
-    fontWeight: 600,
-    marginBottom: "20px",
+    fontSize: "18px",
+    marginBottom: "16px",
   },
   skillGrid: {
     display: "flex",
@@ -145,12 +133,10 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    padding: "10px 16px",
+    padding: "8px 12px",
     borderRadius: "999px",
-    backgroundColor: "#eef2ff",
+    backgroundColor: "#55628f84",
     fontSize: "14px",
     fontWeight: 500,
-    border: "1px solid #e0e7ff",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
   },
 };
