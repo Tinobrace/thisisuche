@@ -6,12 +6,12 @@ import Roadmap from "./pages/Roadmap";
 
 export default function App() {
   return (
-    <AppLayout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/roadmap" element={<Roadmap />} />
-      </Routes>
-    </AppLayout>
+    <Routes>
+      <Route path="/" element={<AppLayout />}>
+        <Route index element={<Home />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="roadmap" element={<Roadmap />} />
+      </Route>
+    </Routes>
   );
 }

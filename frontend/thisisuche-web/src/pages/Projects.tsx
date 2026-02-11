@@ -6,6 +6,7 @@ export default function Projects() {
   return (
     <div>
       <h1 style={styles.pageTitle}>Projects</h1>
+      <p className="mt-4 text-gray-600">A showcase of my recent work and ongoing projects.</p>
 
       <div style={styles.grid}>
         {projects.map((project) => (
