@@ -1,41 +1,53 @@
 import { roadmap } from "../data/roadmap";
-import Card from "../components/ui/Card";
-import Badge from "../components/ui/Badge";
 
 export default function Roadmap() {
   return (
     <div>
-      <h1 style={styles.pageTitle}>Roadmap</h1>
+      <h1 style={styles.pageTitle}>DevOps Roadmap</h1>
       <p style={styles.subtitle}>
-        From foundations to DevSecOps architecture
+        A deliberate path from fundamentals to architecture.
       </p>
 
+      {/* Current Focus Block */}
+      {roadmap.find(p => p.status === "Active") && (
+        <div style={styles.currentFocus}>
+          <strong>Current Focus:</strong>{" "}
+          {roadmap.find(p => p.status === "Active")!.title}
+        </div>
+      )}
+
       <div style={styles.timeline}>
-        {roadmap.map((phase) => (
-          /* Added 'key' prop here for React list rendering */
-          <Card key={phase.id || phase.title}>
-            <div style={styles.header}>
-              <h3 style={styles.title}>{phase.title}</h3>
-              {/* Corrected: Use the Badge component directly instead of nesting it in styles */}
-              <Badge
-                label={phase.status}
-                variant={phase.status}
-                style={{
-                  ...styles.badge,
-                  ...styles.status[phase.status],
-                }}
-              />
+        {roadmap.map((phase) => {
+          const isActive = phase.status === "Active";
+
+          return (
+            <div
+              key={phase.title}
+              style={{
+                ...styles.phase,
+                borderColor: isActive ? "#6366f1" : "#ebb8a7",
+                boxShadow: isActive
+                  ? "0 0 0 2px rgba(99,102,241,0.2)"
+                  : "none",
+              }}
+            >
+              <div style={styles.header}>
+                <h2 style={styles.title}>{phase.title}</h2>
+                <span style={statusStyle(phase.status)}>
+                  {phase.status}
+                </span>
+              </div>
+
+              <p style={styles.description}>{phase.description}</p>
+
+              <ul style={styles.outcomes}>
+                {phase.outcomes.map((outcome) => (
+                  <li key={outcome} style={styles.outcome}>{outcome}</li>
+                ))}
+              </ul>
             </div>
-
-            <p style={styles.description}>{phase.description}</p>
-
-            <ul style={styles.list}>
-              {phase.outcomes.map((outcome) => (
-                <li key={outcome}>{outcome}</li>
-              ))}
-            </ul>
-          </Card>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -48,52 +60,72 @@ const styles = {
     marginBottom: "8px",
   },
   subtitle: {
-    fontSize: "16px",
     color: "#64748b",
     marginBottom: "32px",
+    fontSize: "16px",
+  },
+  currentFocus: {
+    backgroundColor: "#eef2ff",
+    borderRadius: "10px",
+    padding: "12px 16px",
+    marginBottom: "32px",
+    fontSize: "14px",
+    color: "#1e1b4b",
   },
   timeline: {
     display: "flex",
-    flexDirection: "column", // Removed 'as const' unless you are strictly using TypeScript
-    gap: "20px",
+    flexDirection: "column" as "column",
+    gap: "24px",
+  },
+  phase: {
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "12px",
+    padding: "24px",
+    transition: "all 0.2s ease",
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "8px",
+    marginBottom: "12px",
   },
   title: {
-    margin: 0,
-    fontSize: "18px",
+    fontSize: "20px",
     fontWeight: 600,
+    margin: 0,
   },
   description: {
-    margin: "8px 0 12px",
-    color: "#475569",
+    marginBottom: "12px",
+    color: "#334155",
+    fontSize: "15px",
   },
-  list: {
+  outcomes: {
     paddingLeft: "18px",
+    color: "#475569",
     margin: 0,
   },
-  badge: {
-    fontSize: "12px",
-    padding: "4px 10px",
-    borderRadius: "999px",
-    fontWeight: 600,
-  },
-  status: {
-    Completed: {
-      backgroundColor: "#dcfce7",
-      color: "#166534",
-    },
-    Active: {
-      backgroundColor: "#e0e7ff",
-      color: "#3730a3",
-    },
-    Planned: {
-      backgroundColor: "#fef9c3",
-      color: "#854d0e",
-    },
+  outcome: {
+    fontSize: "14px",
+    marginBottom: "6px",
   },
 };
+
+const statusStyle = (status: string) => ({
+  padding: "4px 10px",
+  borderRadius: "999px",
+  fontSize: "12px",
+  fontWeight: 600,
+  backgroundColor:
+    status === "Completed"
+      ? "#dcfce7"
+      : status === "Active"
+        ? "#e0e7ff"
+        : "#fef9c3",
+  color:
+    status === "Completed"
+      ? "#166534"
+      : status === "Active"
+        ? "#3730a3"
+        : "#854d0e",
+});

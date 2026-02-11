@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1 style={styles.pageTitle}>Welcome to ThisIsUche</h1>
+      <h1 style={styles.pageTitle}>Hey! I’m Uchenna Valentine Ukah — Glad You’re Here.</h1>
       <p style={styles.subtitle}>
         DevOps Engineer | Building, Automating, and Scaling
       </p>
