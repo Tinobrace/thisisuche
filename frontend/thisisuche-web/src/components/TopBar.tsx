@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 export default function TopBar() {
   return (
     <div style={styles.topBar}>
+      <div style={styles.spacer}></div>
       <div style={styles.links}>
         <NavLink
           to="/dashboard"
@@ -32,6 +33,12 @@ const styles = {
     backgroundColor: "#ffffff",
     borderBottom: "1px solid #e5e7eb",
     padding: "12px 32px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  spacer: {
+    flex: 1,
   },
   links: {
     display: "flex",
