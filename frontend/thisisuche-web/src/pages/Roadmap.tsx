@@ -3,48 +3,75 @@ import { roadmap } from "../data/roadmap";
 export default function Roadmap() {
   return (
     <div>
-      <h1 style={styles.pageTitle}>DevOps Roadmap</h1>
-      <p style={styles.subtitle}>
+      <h1 className="text-3xl font-bold mb-2 dark:text-white">DevOps Roadmap</h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-8">
         A deliberate path from fundamentals to architecture.
       </p>
 
       {/* Current Focus Block */}
-      {roadmap.find(p => p.status === "Active") && (
-        <div style={styles.currentFocus}>
-          <strong>Current Focus:</strong>{" "}
-          {roadmap.find(p => p.status === "Active")!.title}
+      {roadmap.find((p) => p.status === "Active") && (
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-200 dark:border-indigo-800 rounded-xl p-6 mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-2xl">🎯</span>
+            <strong className="text-lg text-gray-900 dark:text-white">Current Focus:</strong>
+          </div>
+          <p className="text-indigo-900 dark:text-indigo-200 font-medium">
+            {roadmap.find((p) => p.status === "Active")!.title}
+          </p>
         </div>
       )}
 
-      <div style={styles.timeline}>
+      {/* Roadmap Timeline */}
+      <div className="space-y-6">
         {roadmap.map((phase) => {
           const isActive = phase.status === "Active";
 
           return (
             <div
               key={phase.title}
-              style={{
-                ...styles.phase,
-                borderColor: isActive ? "#6366f1" : "#ebb8a7",
-                boxShadow: isActive
-                  ? "0 0 0 2px rgba(99,102,241,0.2)"
-                  : "none",
-              }}
+              className={`bg-white dark:bg-gray-900 rounded-xl p-6 transition-all ${
+                isActive
+                  ? "border-2 border-indigo-500 dark:border-indigo-600 shadow-lg shadow-indigo-100 dark:shadow-indigo-900/20"
+                  : "border border-gray-200 dark:border-gray-800"
+              }`}
             >
-              <div style={styles.header}>
-                <h2 style={styles.title}>{phase.title}</h2>
-                <span style={statusStyle(phase.status)}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {phase.title}
+                </h2>
+                <span
+                  className={`text-xs px-3 py-1 rounded-full font-semibold ${
+                    phase.status === "Completed"
+                      ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                      : phase.status === "Active"
+                      ? "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400"
+                      : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                  }`}
+                >
                   {phase.status}
                 </span>
               </div>
 
-              <p style={styles.description}>{phase.description}</p>
+              <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                {phase.description}
+              </p>
 
-              <ul style={styles.outcomes}>
-                {phase.outcomes.map((outcome) => (
-                  <li key={outcome} style={styles.outcome}>{outcome}</li>
-                ))}
-              </ul>
+              <div>
+                <strong className="text-sm text-gray-900 dark:text-white block mb-2">
+                  Key Outcomes:
+                </strong>
+                <ul className="space-y-2">
+                  {phase.outcomes.map((outcome) => (
+                    <li
+                      key={outcome}
+                      className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
+                    >
+                      <span className="text-indigo-500 dark:text-indigo-400 mt-0.5">✓</span>
+                      <span>{outcome}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           );
         })}
@@ -52,80 +79,3 @@ export default function Roadmap() {
     </div>
   );
 }
-
-const styles = {
-  pageTitle: {
-    fontSize: "32px",
-    fontWeight: 700,
-    marginBottom: "8px",
-  },
-  subtitle: {
-    color: "#64748b",
-    marginBottom: "32px",
-    fontSize: "16px",
-  },
-  currentFocus: {
-    backgroundColor: "#eef2ff",
-    borderRadius: "10px",
-    padding: "12px 16px",
-    marginBottom: "32px",
-    fontSize: "14px",
-    color: "#1e1b4b",
-  },
-  timeline: {
-    display: "flex",
-    flexDirection: "column" as "column",
-    gap: "24px",
-  },
-  phase: {
-    backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
-    borderRadius: "12px",
-    padding: "24px",
-    transition: "all 0.2s ease",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "12px",
-  },
-  title: {
-    fontSize: "20px",
-    fontWeight: 600,
-    margin: 0,
-  },
-  description: {
-    marginBottom: "12px",
-    color: "#334155",
-    fontSize: "15px",
-  },
-  outcomes: {
-    paddingLeft: "18px",
-    color: "#475569",
-    margin: 0,
-  },
-  outcome: {
-    fontSize: "14px",
-    marginBottom: "6px",
-  },
-};
-
-const statusStyle = (status: string) => ({
-  padding: "4px 10px",
-  borderRadius: "999px",
-  fontSize: "12px",
-  fontWeight: 600,
-  backgroundColor:
-    status === "Completed"
-      ? "#dcfce7"
-      : status === "Active"
-        ? "#e0e7ff"
-        : "#fef9c3",
-  color:
-    status === "Completed"
-      ? "#166534"
-      : status === "Active"
-        ? "#3730a3"
-        : "#854d0e",
-});

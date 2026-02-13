@@ -7,13 +7,11 @@ export default function Projects() {
   const [filterTech, setFilterTech] = useState("All");
   const [sortBy, setSortBy] = useState<"name" | "status">("name");
 
-  // Get all unique technologies
   const allTechnologies = useMemo(
     () => Array.from(new Set(projects.flatMap((p) => p.stack))).sort(),
     []
   );
 
-  // Filter and sort projects - optimized with useMemo
   const filteredProjects = useMemo(() => {
     return projects
       .filter((project) => {
@@ -46,25 +44,24 @@ export default function Projects() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">Projects</h1>
-      <p className="text-gray-600 mb-8">
+      <h1 className="text-3xl font-bold mb-2 dark:text-white">Projects</h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-8">
         A showcase of my DevOps work · {filteredProjects.length} of {projects.length} projects
       </p>
 
-      {/* Search and Filter Controls */}
       <div className="flex flex-wrap gap-3 mb-8">
         <input
           type="text"
           placeholder="Search projects..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-1 min-w-[250px] px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="flex-1 min-w-[250px] px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
         />
 
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
-          className="px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 dark:text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="All">All Status</option>
           <option value="Completed">Completed</option>
@@ -74,7 +71,7 @@ export default function Projects() {
         <select
           value={filterTech}
           onChange={(e) => setFilterTech(e.target.value)}
-          className="px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 dark:text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="All">All Technologies</option>
           {allTechnologies.map((tech) => (
@@ -87,7 +84,7 @@ export default function Projects() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="px-4 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 dark:text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option value="name">Sort by Name</option>
           <option value="status">Sort by Status</option>
@@ -96,17 +93,16 @@ export default function Projects() {
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition"
+            className="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
           >
             Clear Filters
           </button>
         )}
       </div>
 
-      {/* Projects Grid or Empty State */}
       {filteredProjects.length === 0 ? (
-        <div className="text-center py-20 px-5 bg-white border border-gray-200 rounded-xl">
-          <p className="text-gray-600 text-lg mb-6">
+        <div className="text-center py-20 px-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+          <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">
             No projects found matching your filters.
           </p>
           <button
@@ -142,24 +138,23 @@ function ProjectCard({ project }: ProjectCardProps) {
   const shouldTruncate = project.description.length > 100;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition">
-      {/* Header */}
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-lg transition">
       <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-lg font-semibold text-gray-900 flex-1">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex-1">
           {project.title}
         </h3>
         <span
-          className={`text-xs px-3 py-1 rounded-full font-semibold ${project.status === "Completed"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
-            }`}
+          className={`text-xs px-3 py-1 rounded-full font-semibold ${
+            project.status === "Completed"
+              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+              : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+          }`}
         >
           {project.status}
         </span>
       </div>
 
-      {/* Description */}
-      <p className="text-sm text-gray-600 leading-relaxed mb-3">
+      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
         {isExpanded || !shouldTruncate
           ? project.description
           : `${project.description.slice(0, 100)}...`}
@@ -168,31 +163,29 @@ function ProjectCard({ project }: ProjectCardProps) {
       {shouldTruncate && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-sm text-indigo-600 font-medium hover:text-indigo-700 mb-4"
+          className="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 mb-4"
         >
           {isExpanded ? "Show less" : "Read more"}
         </button>
       )}
 
-      {/* Tech Tags */}
       <div className="flex flex-wrap gap-2 mb-4">
         {project.stack.map((tech) => (
           <span
             key={tech}
-            className="text-xs bg-gray-100 text-gray-700 px-2.5 py-1 rounded-md font-medium"
+            className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2.5 py-1 rounded-md font-medium"
           >
             {tech}
           </span>
         ))}
       </div>
 
-      {/* GitHub Link */}
-      <div className="pt-4 border-t border-gray-100">
+      <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
         <a
           href={`https://github.com/Tinobrace/${project.repo}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-indigo-600 font-medium hover:text-indigo-700 inline-flex items-center gap-1"
+          className="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 inline-flex items-center gap-1"
         >
           View on GitHub →
         </a>

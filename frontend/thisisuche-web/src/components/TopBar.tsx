@@ -1,61 +1,56 @@
 import { NavLink } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function TopBar() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div style={styles.topBar}>
-      <div style={styles.spacer}></div>
-      <div style={styles.links}>
-        <NavLink
-          to="/dashboard"
-          style={({ isActive }) => ({
-            ...styles.link,
-            ...(isActive ? styles.activeLink : {}),
-          })}
-        >
-          Dashboard
-        </NavLink>
-        <NavLink
-          to="/bio"
-          style={({ isActive }) => ({
-            ...styles.link,
-            ...(isActive ? styles.activeLink : {}),
-          })}
-        >
-          Bio
-        </NavLink>
+    <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-8 py-3">
+      <div className="flex items-center justify-between">
+        {/* Empty left side */}
+        <div></div>
+
+        {/* Right side - Dashboard, Bio, and Dark Mode Toggle */}
+        <div className="flex items-center gap-4">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              `text-sm font-medium px-3 py-2 rounded-lg transition ${
+                isActive
+                  ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              }`
+            }
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/bio"
+            className={({ isActive }) =>
+              `text-sm font-medium px-3 py-2 rounded-lg transition ${
+                isActive
+                  ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              }`
+            }
+          >
+            Bio
+          </NavLink>
+
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "light" ? (
+              <span className="text-xl">🌙</span>
+            ) : (
+              <span className="text-xl">☀️</span>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  topBar: {
-    backgroundColor: "#ffffff",
-    borderBottom: "1px solid #e5e7eb",
-    padding: "12px 32px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  spacer: {
-    flex: 1,
-  },
-  links: {
-    display: "flex",
-    gap: "24px",
-  },
-  link: {
-    textDecoration: "none",
-    color: "#64748b",
-    fontSize: "14px",
-    fontWeight: 500,
-    padding: "8px 12px",
-    borderRadius: "6px",
-    transition: "all 0.2s",
-  },
-  activeLink: {
-    color: "#0f172a",
-    backgroundColor: "#f1f5f9",
-    fontWeight: 600,
-  },
-};

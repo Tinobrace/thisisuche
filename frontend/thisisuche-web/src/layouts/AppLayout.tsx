@@ -8,30 +8,14 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div style={styles.container}>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
       <Sidebar />
-      <div style={styles.mainArea}>
+      <div className="flex-1 flex flex-col">
         <TopBar />
-        <main style={styles.main}>{children}</main>
+        <main className="flex-1 p-8 overflow-y-auto">
+          {children}
+        </main>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: "flex",
-    minHeight: "100vh",
-    backgroundColor: "#f8fafc",
-  },
-  mainArea: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column" as "column",
-  },
-  main: {
-    flex: 1,
-    padding: "32px",
-    overflowY: "auto" as "auto",
-  },
-};

@@ -2,410 +2,217 @@ import { projects } from "../data/projects";
 import { roadmap } from "../data/roadmap";
 
 export default function Dashboard() {
-    // Calculate project stats
-    const stats = projects.reduce(
-        (acc, project) => {
-            if (project.status === "Completed") acc.completed++;
-            if (project.status === "In Progress") acc.inProgress++;
+  // Calculate project stats
+  const stats = projects.reduce(
+    (acc, project) => {
+      if (project.status === "Completed") acc.completed++;
+      if (project.status === "In Progress") acc.inProgress++;
 
-            project.stack.forEach((tech) => {
-                acc.techUsage[tech] = (acc.techUsage[tech] || 0) + 1;
-            });
+      project.stack.forEach((tech) => {
+        acc.techUsage[tech] = (acc.techUsage[tech] || 0) + 1;
+      });
 
-            return acc;
-        },
-        {
-            completed: 0,
-            inProgress: 0,
-            techUsage: {} as Record<string, number>,
-        }
-    );
+      return acc;
+    },
+    {
+      completed: 0,
+      inProgress: 0,
+      techUsage: {} as Record<string, number>,
+    }
+  );
 
-    // Get roadmap progress
-    const completedPhases = roadmap.filter(p => p.status === "Completed").length;
-    const activePhase = roadmap.find(p => p.status === "Active");
-    const progressPercentage = Math.round((completedPhases / roadmap.length) * 100);
+  // Get roadmap progress
+  const completedPhases = roadmap.filter((p) => p.status === "Completed").length;
+  const activePhase = roadmap.find((p) => p.status === "Active");
+  const progressPercentage = Math.round((completedPhases / roadmap.length) * 100);
 
-    // Get top technologies
-    const topTech = Object.entries(stats.techUsage)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
+  // Get top technologies
+  const topTech = Object.entries(stats.techUsage)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
 
-    // Recent projects (last 3)
-    const recentProjects = projects.slice(-3).reverse();
+  // Recent projects (last 3)
+  const recentProjects = projects.slice(-3).reverse();
 
-    return (
-        <div>
-            <h1 style={styles.pageTitle}>Dashboard</h1>
-            <p style={styles.subtitle}>
-                Overview of your DevOps journey and progress
-            </p>
+  return (
+    <div>
+      <h1 className="text-3xl font-bold mb-2 dark:text-white">Dashboard</h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-8">
+        Overview of your DevOps journey and progress
+      </p>
 
-            {/* Stats Grid */}
-            <div style={styles.statsGrid}>
-                <StatCard
-                    title="Total Projects"
-                    value={projects.length}
-                    subtitle="Completed & In Progress"
-                    color="#10b981"
-                />
-                <StatCard
-                    title="Completed"
-                    value={stats.completed}
-                    subtitle={`${stats.inProgress} in progress`}
-                    color="#3b82f6"
-                />
-                <StatCard
-                    title="Roadmap Progress"
-                    value={`${progressPercentage}%`}
-                    subtitle={`${completedPhases}/${roadmap.length} phases done`}
-                    color="#8b5cf6"
-                />
-                <StatCard
-                    title="Technologies"
-                    value={Object.keys(stats.techUsage).length}
-                    subtitle="Different tech used"
-                    color="#f59e0b"
-                />
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <StatCard
+          title="Total Projects"
+          value={projects.length}
+          subtitle="Completed & In Progress"
+          color="#10b981"
+        />
+        <StatCard
+          title="Completed"
+          value={stats.completed}
+          subtitle={`${stats.inProgress} in progress`}
+          color="#3b82f6"
+        />
+        <StatCard
+          title="Roadmap Progress"
+          value={`${progressPercentage}%`}
+          subtitle={`${completedPhases}/${roadmap.length} phases done`}
+          color="#8b5cf6"
+        />
+        <StatCard
+          title="Technologies"
+          value={Object.keys(stats.techUsage).length}
+          subtitle="Different tech used"
+          color="#f59e0b"
+        />
+      </div>
+
+      {/* Current Focus */}
+      {activePhase && (
+        <div className="mb-10">
+          <h2 className="text-xl font-semibold mb-4 dark:text-white">🎯 Current Focus</h2>
+          <div className="bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-500 dark:border-indigo-600 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-indigo-900 dark:text-indigo-200 mb-2">
+              {activePhase.title}
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 mb-4">{activePhase.description}</p>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              <strong className="text-gray-900 dark:text-white">Key Outcomes:</strong>
+              <ul className="mt-2 space-y-1 ml-5 list-disc">
+                {activePhase.outcomes.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
-
-            {/* Current Focus */}
-            {activePhase && (
-                <div style={styles.currentFocus}>
-                    <h2 style={styles.sectionTitle}>🎯 Current Focus</h2>
-                    <div style={styles.focusCard}>
-                        <h3 style={styles.focusTitle}>{activePhase.title}</h3>
-                        <p style={styles.focusDescription}>{activePhase.description}</p>
-                        <div style={styles.outcomes}>
-                            <strong>Key Outcomes:</strong>
-                            <ul style={styles.outcomeList}>
-                                {activePhase.outcomes.map((outcome) => (
-                                    <li key={outcome}>{outcome}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Two Column Layout */}
-            <div style={styles.twoColumn}>
-                {/* Recent Projects */}
-                <div style={styles.section}>
-                    <h2 style={styles.sectionTitle}>📁 Recent Projects</h2>
-                    <div style={styles.projectList}>
-                        {recentProjects.map((project) => (
-                            <div key={project.title} style={styles.projectCard}>
-                                <div style={styles.projectHeader}>
-                                    <h3 style={styles.projectTitle}>{project.title}</h3>
-                                    <span
-                                        style={{
-                                            ...styles.badge,
-                                            backgroundColor:
-                                                project.status === "Completed" ? "#dcfce7" : "#fef9c3",
-                                            color:
-                                                project.status === "Completed" ? "#166534" : "#854d0e",
-                                        }}
-                                    >
-                                        {project.status}
-                                    </span>
-                                </div>
-                                <p style={styles.projectDesc}>{project.description}</p>
-                                <div style={styles.techTags}>
-                                    {project.stack.slice(0, 3).map((tech) => (
-                                        <span key={tech} style={styles.techTag}>
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Top Technologies */}
-                <div style={styles.section}>
-                    <h2 style={styles.sectionTitle}>⚡ Top Technologies</h2>
-                    <div style={styles.techList}>
-                        {topTech.map(([tech, count], index) => (
-                            <div key={tech} style={styles.techItem}>
-                                <div style={styles.techRank}>#{index + 1}</div>
-                                <div style={styles.techInfo}>
-                                    <span style={styles.techName}>{tech}</span>
-                                    <div style={styles.progressBar}>
-                                        <div
-                                            style={{
-                                                ...styles.progressFill,
-                                                width: `${(count / topTech[0][1]) * 100}%`,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <span style={styles.techCount}>{count} projects</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div style={styles.section}>
-                <h2 style={styles.sectionTitle}>🚀 Quick Actions</h2>
-                <div style={styles.actions}>
-                    <ActionButton label="View All Projects" link="/projects" />
-                    <ActionButton label="See Roadmap" link="/roadmap" />
-                    <ActionButton label="Read Bio" link="/bio" />
-                </div>
-            </div>
+          </div>
         </div>
-    );
+      )}
+
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+        {/* Recent Projects */}
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+          <h2 className="text-lg font-semibold mb-5 dark:text-white">📁 Recent Projects</h2>
+          <div className="space-y-4">
+            {recentProjects.map((project) => (
+              <div
+                key={project.title}
+                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">
+                    {project.title}
+                  </h3>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                      project.status === "Completed"
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                        : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+                    }`}
+                  >
+                    {project.status}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {project.stack.slice(0, 3).map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-xs bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-2 py-0.5 rounded font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top Technologies */}
+        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+          <h2 className="text-lg font-semibold mb-5 dark:text-white">⚡ Top Technologies</h2>
+          <div className="space-y-4">
+            {topTech.map(([tech, count], index) => (
+              <div key={tech} className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+                    #{index + 1}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">
+                      {tech}
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {count} projects
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full transition-all"
+                      style={{ width: `${(count / topTech[0][1]) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+        <h2 className="text-lg font-semibold mb-4 dark:text-white">🚀 Quick Actions</h2>
+        <div className="flex flex-wrap gap-3">
+          <ActionButton label="View All Projects" link="/projects" />
+          <ActionButton label="See Roadmap" link="/roadmap" />
+          <ActionButton label="Read Bio" link="/bio" />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // Stat Card Component
 interface StatCardProps {
-    title: string;
-    value: string | number;
-    subtitle: string;
-    color: string;
+  title: string;
+  value: string | number;
+  subtitle: string;
+  color: string;
 }
 
 function StatCard({ title, value, subtitle, color }: StatCardProps) {
-    return (
-        <div style={styles.statCard}>
-            <div style={styles.statHeader}>
-                <span style={styles.statTitle}>{title}</span>
-                <div style={{ ...styles.statDot, backgroundColor: color }} />
-            </div>
-            <div style={styles.statValue}>{value}</div>
-            <div style={styles.statSubtitle}>{subtitle}</div>
-        </div>
-    );
+  return (
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</span>
+        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+      </div>
+      <div className="text-4xl font-bold text-gray-900 dark:text-white mb-1">{value}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</div>
+    </div>
+  );
 }
 
 // Action Button Component
 interface ActionButtonProps {
-    label: string;
-    link: string;
+  label: string;
+  link: string;
 }
 
 function ActionButton({ label, link }: ActionButtonProps) {
-    return (
-        <a href={link} style={styles.actionButton}>
-            {label} →
-        </a>
-    );
+  return (
+    <a
+      href={link}
+      className="px-5 py-2.5 text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+      {label} →
+    </a>
+  );
 }
-
-const styles = {
-    pageTitle: {
-        fontSize: "32px",
-        fontWeight: 700,
-        marginBottom: "8px",
-    },
-    subtitle: {
-        fontSize: "16px",
-        color: "#64748b",
-        marginBottom: "32px",
-    },
-    statsGrid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-        gap: "20px",
-        marginBottom: "40px",
-    },
-    statCard: {
-        backgroundColor: "#ffffff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "12px",
-        padding: "24px",
-    },
-    statHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "16px",
-    },
-    statTitle: {
-        fontSize: "14px",
-        color: "#64748b",
-        fontWeight: 500,
-    },
-    statDot: {
-        width: "12px",
-        height: "12px",
-        borderRadius: "50%",
-    },
-    statValue: {
-        fontSize: "36px",
-        fontWeight: 700,
-        color: "#0f172a",
-        marginBottom: "4px",
-    },
-    statSubtitle: {
-        fontSize: "13px",
-        color: "#94a3b8",
-    },
-    currentFocus: {
-        marginBottom: "40px",
-    },
-    focusCard: {
-        backgroundColor: "#eef2ff",
-        border: "2px solid #6366f1",
-        borderRadius: "12px",
-        padding: "24px",
-    },
-    focusTitle: {
-        fontSize: "20px",
-        fontWeight: 600,
-        color: "#1e1b4b",
-        marginBottom: "8px",
-    },
-    focusDescription: {
-        fontSize: "15px",
-        color: "#475569",
-        marginBottom: "16px",
-    },
-    outcomes: {
-        fontSize: "14px",
-        color: "#334155",
-    },
-    outcomeList: {
-        marginTop: "8px",
-        marginLeft: "20px",
-        color: "#475569",
-    },
-    twoColumn: {
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "24px",
-        marginBottom: "40px",
-    },
-    section: {
-        backgroundColor: "#ffffff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "12px",
-        padding: "24px",
-    },
-    sectionTitle: {
-        fontSize: "18px",
-        fontWeight: 600,
-        marginBottom: "20px",
-        color: "#0f172a",
-    },
-    projectList: {
-        display: "flex",
-        flexDirection: "column" as "column",
-        gap: "16px",
-    },
-    projectCard: {
-        padding: "16px",
-        backgroundColor: "#f8fafc",
-        borderRadius: "8px",
-        border: "1px solid #e2e8f0",
-    },
-    projectHeader: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "8px",
-    },
-    projectTitle: {
-        fontSize: "15px",
-        fontWeight: 600,
-        margin: 0,
-        color: "#0f172a",
-    },
-    badge: {
-        fontSize: "11px",
-        padding: "3px 8px",
-        borderRadius: "999px",
-        fontWeight: 600,
-    },
-    projectDesc: {
-        fontSize: "13px",
-        color: "#64748b",
-        marginBottom: "12px",
-        lineHeight: "1.5",
-    },
-    techTags: {
-        display: "flex",
-        gap: "6px",
-        flexWrap: "wrap" as "wrap",
-    },
-    techTag: {
-        fontSize: "11px",
-        backgroundColor: "#e0e7ff",
-        color: "#3730a3",
-        padding: "3px 8px",
-        borderRadius: "4px",
-        fontWeight: 500,
-    },
-    techList: {
-        display: "flex",
-        flexDirection: "column" as "column",
-        gap: "16px",
-    },
-    techItem: {
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-    },
-    techRank: {
-        width: "32px",
-        height: "32px",
-        backgroundColor: "#f1f5f9",
-        borderRadius: "6px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "12px",
-        fontWeight: 600,
-        color: "#475569",
-        flexShrink: 0,
-    },
-    techInfo: {
-        flex: 1,
-    },
-    techName: {
-        fontSize: "14px",
-        fontWeight: 500,
-        color: "#0f172a",
-        display: "block",
-        marginBottom: "4px",
-    },
-    progressBar: {
-        height: "6px",
-        backgroundColor: "#e2e8f0",
-        borderRadius: "3px",
-        overflow: "hidden",
-    },
-    progressFill: {
-        height: "100%",
-        backgroundColor: "#6366f1",
-        borderRadius: "3px",
-        transition: "width 0.3s ease",
-    },
-    techCount: {
-        fontSize: "12px",
-        color: "#94a3b8",
-        fontWeight: 500,
-        flexShrink: 0,
-    },
-    actions: {
-        display: "flex",
-        gap: "12px",
-        flexWrap: "wrap" as "wrap",
-    },
-    actionButton: {
-        textDecoration: "none",
-        backgroundColor: "#f1f5f9",
-        color: "#0f172a",
-        padding: "12px 20px",
-        borderRadius: "8px",
-        fontSize: "14px",
-        fontWeight: 500,
-        border: "1px solid #e2e8f0",
-        transition: "all 0.2s",
-        cursor: "pointer",
-    },
-};
