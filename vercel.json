@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "installCommand": "npm install",
-  "framework": "vite"
+  "buildCommand": "cd frontend/thisisuche-web && npm run build",
+  "outputDirectory": "frontend/thisisuche-web/dist",
+  "installCommand": "cd frontend/thisisuche-web && npm install",
+  "framework": null
 }
