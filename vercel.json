@@ -1,7 +1,0 @@
-{
-  "buildCommand": "cd frontend/thisisuche-web && npm install && npm run build",
-  "outputDirectory": "frontend/thisisuche-web/dist",
-  "devCommand": "cd frontend/thisisuche-web && npm run dev",
-  "installCommand": "cd frontend/thisisuche-web && npm install",
-  "framework": null
-}
