@@ -54,6 +54,10 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow- 700 p-4 mb-4">
+  🚧 STAGING ENVIRONMENT - Testing new features
+        </div>
+
         <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-100 dark:border-indigo-800 rounded-xl p-6">
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
             I'm Uchenna Valentine Ukah, a DevOps Engineer focused on building reliable, 
