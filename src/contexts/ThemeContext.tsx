@@ -1,7 +1,9 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
 
 type Theme = "light" | "dark";
-
+// ... rest of file
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
@@ -10,16 +12,13 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light"); // Start with light mode
-
-  useEffect(() => {
-    // Check localStorage on mount
+  // Lazy initialization - reads localStorage only once
+  const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem("theme") as Theme;
-    if (saved) {
-      setTheme(saved);
-    }
-  }, []);
+    return saved || "light";
+  });
 
+  // Apply theme to DOM when it changes
   useEffect(() => {
     const root = document.documentElement;
     
@@ -32,13 +31,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     // Save to localStorage
     localStorage.setItem("theme", theme);
     
-    console.log("Theme changed to:", theme); // Debug log
+    console.log("Theme changed to:", theme);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme((prev) => {
       const newTheme = prev === "light" ? "dark" : "light";
-      console.log("Toggling from", prev, "to", newTheme); // Debug log
+      console.log("Toggling from", prev, "to", newTheme);
       return newTheme;
     });
   };

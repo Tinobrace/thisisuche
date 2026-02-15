@@ -1,78 +1,72 @@
-/*import type { Project } from "../data/Project";
+import { useState } from "react";
 
 interface ProjectCardProps {
-  title: string;
-  status: string;
-  description: string;
-  tags: string[];
+  project: {
+    title: string;
+    status: "Completed" | "In Progress";
+    description: string;
+    stack: string[];
+    repo: string;
+  };
 }
 
-export default function ProjectCard({
-  title,
-  status,
-  description,
-  tags,
-}: Project) {
-  return (
-    <div>
-      <h3>{title}</h3>
-      <p>{status}</p>
-      <p>{description}</p>
+export default function ProjectCard({ project }: ProjectCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const shouldTruncate = project.description.length > 100;
 
-      <div>
-        {tags.map((tag) => (
-          <span key={tag}>{tag}</span>
+  return (
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 hover:shadow-lg transition">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex-1">
+          {project.title}
+        </h3>
+        <span
+          className={`text-xs px-3 py-1 rounded-full font-semibold ${
+            project.status === "Completed"
+              ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+              : "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400"
+          }`}
+        >
+          {project.status}
+        </span>
+      </div>
+
+      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-3">
+        {isExpanded || !shouldTruncate
+          ? project.description
+          : `${project.description.slice(0, 100)}...`}
+      </p>
+
+      {shouldTruncate && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 mb-4"
+        >
+          {isExpanded ? "Show less" : "Read more"}
+        </button>
+      )}
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.stack.map((tech) => (
+          <span
+            key={tech}
+            className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-2.5 py-1 rounded-md font-medium"
+          >
+            {tech}
+          </span>
         ))}
+      </div>
+
+      <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+        <a
+          href={`https://github.com/Tinobrace/${project.repo}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700 dark:hover:text-indigo-300 inline-flex items-center gap-1"
+        >
+          View on GitHub →
+        </a>
       </div>
     </div>
   );
 }
-
-const styles = {
-  card: {
-    backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
-    borderRadius: "10px",
-    padding: "20px",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "12px",
-  },
-  title: {
-    margin: 0,
-    fontSize: "18px",
-  },
-  badge: {
-    fontSize: "12px",
-    padding: "4px 8px",
-    borderRadius: "999px",
-    fontWeight: 500,
-  },
-  completed: {
-    backgroundColor: "#dcfce7",
-    color: "#166534",
-  },
-  inProgress: {
-    backgroundColor: "#fef9c3",
-    color: "#854d0e",
-  },
-  description: {
-    fontSize: "14px",
-    color: "#374151",
-    marginBottom: "12px",
-  },
-  tags: {
-    display: "flex",
-    gap: "8px",
-    flexWrap: "wrap",
-  },
-  tag: {
-    fontSize: "12px",
-    backgroundColor: "#f1f5f9",
-    padding: "4px 8px",
-    borderRadius: "6px",
-  },
-};*/
