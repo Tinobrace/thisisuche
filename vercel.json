@@ -1,5 +1,15 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "thisisuche.vercel.app"
+        }
+      ],
+      "destination": "https://valencloud.xyz/:path*",
+      "permanent": true
+    }
   ]
 }
