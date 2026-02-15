@@ -1,12 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/:path*",
-      "has": [{"type": "host", "value": "thisisuche.vercel.app"}],
-      "destination": "https://valencloud.xyz/:path*",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -14,8 +6,6 @@
         {"key": "X-Frame-Options", "value": "DENY"},
         {"key": "X-Content-Type-Options", "value": "nosniff"},
         {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"}
-                {"key": "Link", "value": "<https://valencloud.xyz>; rel=\"canonical\""}
-      
       ]
     }
   ]
