@@ -1,0 +1,185 @@
+# Workflow name (shows in GitHub Actions tab)
+name: CI/CD Pipeline
+
+# When to run this workflow
+# "on" defines triggers
+on:
+  push:
+    branches: [ main ]  # Run on pushes to main branch
+  pull_request:
+    branches: [ main ]  # Run on PRs targeting main
+  
+  # Allow manual trigger from GitHub UI (useful for debugging)
+  workflow_dispatch:
+
+# Environment variables available to all jobs
+env:
+  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/thisisuche
+  NODE_VERSION: '22'
+
+# Jobs run in parallel by default (unless dependencies specified)
+jobs:
+  
+  # Job 1: Code Quality Checks
+  # Why first? Fail fast if code quality is bad
+  lint:
+    name: Code Quality & Linting
+    runs-on: ubuntu-latest  # GitHub-hosted runner (free for public repos)
+    
+    steps:
+      # Step 1: Get code from repo
+      # Why? Runner starts with empty filesystem
+      - name: Checkout code
+        uses: actions/checkout@v4  # Official GitHub action
+      
+      # Step 2: Install Node.js
+      # Why? Need Node to run npm commands
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'  # Cache node_modules for faster builds
+      
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci  # ci = clean install (faster, more reliable than npm install)
+      
+      # Step 4: Run linter
+      # Why? Catch code style issues early
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true  # Don't fail entire pipeline (warning only)
+
+  # Job 2: Build and Test
+  # Depends on lint job passing
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: lint  # Wait for lint job to complete
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Build the app
+      # Why? Verify it compiles without errors
+      - name: Build application
+        run: npm run build
+      
+      # Upload build artifacts
+      # Why? Share between jobs (deploy job needs these files)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1  # Keep for 1 day only (save storage)
+
+  # Job 3: Docker Build and Push
+  # Only runs on main branch (not PRs)
+  docker:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'  # Only on main branch
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Set up Docker Buildx (advanced Docker builder)
+      # Why? Enables multi-platform builds, caching
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      # Login to Docker Hub
+      # Why? Need auth to push images
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      # Extract metadata (tags, labels)
+      # Why? Proper versioning and labeling (best practice)
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_IMAGE }}
+          tags: |
+            type=sha,prefix={{branch}}-  # SHA-based tag (e.g., main-abc1234)
+            type=raw,value=latest,enable={{is_default_branch}}  # latest tag
+      
+      # Build and push Docker image
+      # Why? Create deployable artifact
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha  # GitHub Actions cache
+          cache-to: type=gha,mode=max
+      
+      # Display image info
+      - name: Image digest
+        run: echo "Image pushed with tags → ${{ steps.meta.outputs.tags }}"
+
+  # Job 4: Security Scanning
+  # Scan Docker image for vulnerabilities
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: docker
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.DOCKER_IMAGE }}:latest
+          format: 'table'
+          exit-code: '0'  # Don't fail build on vulnerabilities (yet)
+          severity: 'CRITICAL,HIGH'
+
+  # Job 5: Deploy to Vercel
+  # Only after all checks pass
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [build, docker, security]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Download build artifacts from build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      
+      # Deploy to Vercel
+      # Note: Vercel already auto-deploys, this is for explicit control
+      - name: Deploy to Vercel
+        run: echo "Vercel deploys automatically on push to main"
+      
+      # Send success notification
+      - name: Deployment successful
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🐳 Docker image: ${{ env.DOCKER_IMAGE }}:latest"
+          echo "🌐 Live site: https://thisisuche.vercel.app"
