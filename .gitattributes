@@ -1,2 +1,3 @@
 # Always keep main branch's vercel.json on merge
 vercel.json merge=ours
+vercel.json merge=ours
