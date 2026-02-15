@@ -1,4 +1,4 @@
-import type { Project } from "../data/Project";
+/*import type { Project } from "../data/Project";
 
 interface ProjectCardProps {
   title: string;
@@ -75,4 +75,4 @@ const styles = {
     padding: "4px 8px",
     borderRadius: "6px",
   },
-};
+};*/
